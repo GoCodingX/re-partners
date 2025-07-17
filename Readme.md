@@ -7,11 +7,13 @@ A **Go microservice** for managing **packs** using **Echo, PostgreSQL (Bun), and
 ## Features
 
 ✅ REST API with Echo and OpenAPI validation  
-✅ **All handler signatures, request and response types are generated automatically from [`api/openapi.yaml`](api/openapi.yaml)** via codegen
-✅ Clean layered architecture (handlers, repository, migration, config)
-✅ PostgreSQL with Bun ORM and auto migrations
-✅ Structured logging with `slog`
-✅ Structured error handling
+✅ **All handler signatures, request and response types are generated automatically
+from [`api/openapi.yaml`](api/openapi.yaml)** via codegen  
+✅ Clean layered architecture (handlers, repository, migration, config)  
+✅ PostgreSQL with Bun ORM and auto migrations  
+✅ Structured logging with `slog`  
+✅ Request ID, timeout and other middlewares  
+✅ Structured error handling  
 ✅ Easily testable architecture
 
 ---

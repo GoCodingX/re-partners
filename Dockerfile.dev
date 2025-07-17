@@ -1,0 +1,14 @@
+# Set the base image to the latest official Go image
+FROM golang:latest
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy go.mod and go.sum files
+COPY ./go.mod go.sum ./
+
+# Download dependencies
+RUN go mod download
+
+# Copy the source code into the container
+COPY . .

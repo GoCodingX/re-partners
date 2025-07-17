@@ -1,0 +1,196 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Packs API server
+paths:
+  /packs:
+    post:
+      requestBody:
+        description: Store packs
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePackRequest'
+        required: true
+      responses:
+        '201':
+          description: Store packs response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pack'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      summary: Gets a list of packs
+      responses:
+        '200':
+          description: get packs response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPacksResponse'
+  /packs/{packId}:
+    patch:
+      summary: Update a pack by ID
+      operationId: updatePack
+      parameters:
+        - name: packId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minLength: 36
+            maxLength: 36
+      requestBody:
+        description: Update pack
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePackRequest'
+        required: true
+      responses:
+        '204':
+          description: update packs response
+    delete:
+      summary: Delete a pack by ID
+      operationId: deletePack
+      parameters:
+        - name: packId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            minLength: 36
+            maxLength: 36
+          description: The ID of the pack to delete
+      responses:
+        '204':
+          description: delete pack response
+  /packs/calculate:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CalculatePacksRequest'
+        required: true
+      responses:
+        '200':
+          description: Calculate packs response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatePacksResponse'
+components:
+  schemas:
+    UpdatePackRequest:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 10000
+      required:
+        - size
+    CreatePackRequest:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 10000
+      required:
+        - size
+    CalculatePacksRequest:
+      type: object
+      properties:
+        items:
+          type: integer
+          minimum: 1
+          maximum: 100000
+      required:
+        - items
+    Pack:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 10000
+      required:
+        - id
+        - size
+    PackAndItems:
+      type: object
+      properties:
+        pack_size:
+          type: integer
+          format: int32
+        pack_count:
+          type: integer
+          format: int32
+      required:
+        - pack_size
+        - pack_count
+    CalculatePacksResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/PackAndItems'
+    GetPacksResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Pack'
+    Detail:
+      type: object
+      properties:
+        field:
+          type: string
+          description: The specific field related to the error.
+          example: email
+        message:
+          type: string
+          description: Human-readable explanation of the field error.
+          example: Email must be a valid address.
+      required:
+        - field
+        - message
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int
+          description: HTTP status code.
+          example: 400
+        message:
+          type: string
+          description: Human-readable summary of the error.
+          example: Validation failed.
+        status:
+          type: string
+          description: Status code for categorization, e.g., 'INVALID_ARGUMENT'.
+          example: INVALID_ARGUMENT
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/Detail'
+          description: List of detailed error objects for granular issues.
+      required:
+        - code
+        - message
+        - status

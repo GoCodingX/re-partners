@@ -1,0 +1,8 @@
+linters:
+  enable-all: true
+  fast: true
+  disable:
+    - mnd
+    - funlen
+    - dupl
+    - depguard

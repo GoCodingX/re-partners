@@ -4,9 +4,6 @@ FROM golang:alpine
 # Set the working directory inside the container
 WORKDIR /app
 
-# Install required build tools
-RUN apk add --no-cache make
-
 # Copy go.mod and go.sum files
 COPY ./go.mod go.sum ./
 
